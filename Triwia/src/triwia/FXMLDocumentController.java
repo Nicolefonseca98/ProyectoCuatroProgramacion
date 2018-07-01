@@ -2,6 +2,7 @@
 package triwia;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -11,8 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import socket.client2;
 
 /**
  *
@@ -21,6 +25,12 @@ import javafx.stage.Stage;
 public class FXMLDocumentController implements Initializable {
   
     @FXML private AnchorPane anchorPane;
+    @FXML
+    private Label label;
+    @FXML
+    private TextField textFieldDireccionIp;
+    @FXML
+    private TextField textFieldPuerto;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -33,7 +43,11 @@ public class FXMLDocumentController implements Initializable {
     }    
 
     @FXML
-    private void empezarJuego(ActionEvent event) throws IOException {     
+    private void empezarJuego(ActionEvent event) throws IOException {   
+       client2 c = new client2();
+//       Socket socket = new Socket(c.host(textFieldDireccionIp.getText()), c.port(Integer.parseInt(textFieldPuerto.getText())));
+//       socket.connect(socket.getLocalSocketAddress());
+        
         Parent parent = FXMLLoader.load(getClass().getResource("InterfazJuego.fxml"));
         Scene scene = new Scene(parent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();

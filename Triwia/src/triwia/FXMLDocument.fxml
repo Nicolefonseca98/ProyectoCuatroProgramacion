@@ -22,8 +22,8 @@
             <Font name="Arial" size="18.0" />
          </font>
       </Label>
-      <TextField layoutX="231.0" layoutY="155.0" prefHeight="25.0" prefWidth="240.0" />
-      <TextField layoutX="231.0" layoutY="222.0" prefHeight="25.0" prefWidth="240.0" />
+      <TextField fx:id="textFieldDireccionIp" layoutX="231.0" layoutY="155.0" prefHeight="25.0" prefWidth="240.0" />
+      <TextField fx:id="textFieldPuerto" layoutX="231.0" layoutY="222.0" prefHeight="25.0" prefWidth="240.0" />
       <Button layoutX="231.0" layoutY="301.0" mnemonicParsing="false" onAction="#empezarJuego" text="Empezar">
          <font>
             <Font name="Arial" size="14.0" />
