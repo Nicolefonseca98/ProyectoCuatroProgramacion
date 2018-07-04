@@ -1,12 +1,12 @@
 
 package socket;
 
-import java.io.DataOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,70 +18,41 @@ public class client2 {
     String cliente = "";
     
     public String host() {
+        System.out.println("host");
         Scanner sc = new Scanner(System.in);
         String host = sc.nextLine();
         return host;
     }
     
     public int port() {
+        System.out.println("Port");
         Scanner sc = new Scanner(System.in);
         int port = sc.nextInt();
         return port;
     }
     
-    public Socket creaSocket() throws IOException {
-        Socket socket = new Socket(host(), port());
+    public Socket creaSocket(String host, int port) throws IOException {
+        Socket socket = new Socket(host, port);
         return socket;
     }
     
-    public void conectar() throws IOException {
-        creaSocket().connect(creaSocket().getLocalSocketAddress());
+    public void enviar(Socket socket) throws IOException {
+        //DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        //dataOutputStream.writeUTF("1");
+        PrintWriter pw = new PrintWriter(socket.getOutputStream());
+        pw.println("1");
+        pw.close();
+        //socket.close();
     }
-    
-    public void intentoConexion() throws InterruptedException {
-        while (true) {
-            System.out.println("\nTrying to connect to:" + host() + ":" + port());
-            try {
-                conectar();
-            } catch (IOException ex) {
-                System.out.println("Trying again in 5 Seconds\n");
-                Thread.sleep(5000);
-            }
-        }
 
+    public void recibir(Socket socket) throws IOException {
+        //DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        //System.out.println(dataInputStream.readUTF());
+        BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        //while(true){
+            String tmpRead = br.readLine();
+            System.out.println("The result is: "+tmpRead);
+        //}
+        br.close();
     }
-    
-    String mensaje;
-    public void enviar (Socket socket) throws IOException {
-        
-        while (true) {
-            if(exit) {
-                Scanner sc = new Scanner(System.in);
-                 mensaje = sc.nextLine();
-                mensaje = cliente +": " + mensaje;
-                if(mensaje == cliente+": salir") {
-                    exit = true;
-                    mensaje = "The "+cliente+" Client is gone";
-                    DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                    dataOutputStream.write(mensaje.getBytes());
-                    socket.close();
-                } else { 
-                    Thread t = new Thread(new Runnable() {
-                        public void run() {
-                            try {
-                                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                                dataOutputStream.write(mensaje.getBytes());
-                            } catch (IOException ex) {
-                                Logger.getLogger(client2.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
-                    });
-                    t.start();
-                }
-
-            }
-        }
-    }
-    
-
 }

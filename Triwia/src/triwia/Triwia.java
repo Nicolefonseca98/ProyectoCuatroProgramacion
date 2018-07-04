@@ -3,8 +3,6 @@ package triwia;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,19 +31,20 @@ public class Triwia extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        //launch(args);
-        client2 c = new client2();
         try {
-            Socket s = c.creaSocket();
-            c.intentoConexion();
-//            c.enviar(s);
-            System.out.println("conexión");
-            
+            //launch(args);
+            client2 c = new client2();
+            String host = c.host();
+            int port = c.port();
+            Socket socket = c.creaSocket(host, port);
+            c.enviar(socket);
+            c.recibir(socket);
+           // socket.close();
         } catch (IOException ex) {
-            Logger.getLogger(Triwia.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Triwia.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("exception");
+            ex.printStackTrace();
         }
+     
     }
     
 }

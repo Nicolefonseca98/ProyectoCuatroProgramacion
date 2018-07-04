@@ -35,8 +35,10 @@ def conexiones(s):
 #Envia un mensaje codificado a la direccion del cliente 1
 def enviar(conn):
 
-        msg = input("")
+        #msg = input("")
+        msg="adios"
         msg = "Servidor: " + msg
+        print("sending "+msg)
         try:
 
             conn.send(msg.encode("UTF-8"))
@@ -49,7 +51,8 @@ def enviar(conn):
 #Envia un mensaje codificado a la direccion del cliente 2.
 def enviar2(conn):
 
-        msg = input("")
+        #msg = input("")
+        msg="adios"
         msg = "Servidor: " + msg
         try:
 
@@ -68,7 +71,7 @@ def recibir(conn):
         try:
             reply = conn.recv(2048)
             reply = reply.decode("UTF-8")
-
+            print("answer: "+ reply)
             if reply[0] == "1":
                 print("Cliente", reply)
                 start_new_thread(enviar, (conn,))
@@ -118,7 +121,7 @@ def main():
     print("\nWaiting for clients")
 
     conn,addr = conexiones(s)
-    enviarEspecial(conn)               # Espero conexion del 1 cliente
+    #enviarEspecial(conn)               # Espero conexion del 1 cliente
     start_new_thread(recibir,(conn,))
 
     conn2,addr2 = conexiones(s)
