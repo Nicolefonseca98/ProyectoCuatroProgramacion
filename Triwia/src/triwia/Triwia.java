@@ -3,12 +3,16 @@ package triwia;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import socket.client2;
+import json.leerJson;
+import org.json.simple.parser.ParseException;
+import socket.Cliente;
 
 /**
  *
@@ -31,20 +35,9 @@ public class Triwia extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            //launch(args);
-            client2 c = new client2();
-            String host = c.host();
-            int port = c.port();
-            Socket socket = c.creaSocket(host, port);
-            c.enviar(socket);
-            c.recibir(socket);
-           // socket.close();
-        } catch (IOException ex) {
-            System.out.println("exception");
-            ex.printStackTrace();
-        }
-     
+
+        launch(args);
+
     }
     
 }

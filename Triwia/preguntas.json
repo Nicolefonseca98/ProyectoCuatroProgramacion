@@ -1,0 +1,22 @@
+[
+  {
+    "enunciado": "¿Quién es el presidente de Costa Rica?",
+    "respuestas": [
+      "Carlos Alvarado",
+      "Carlos Alvarado Quesada"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es la capital de Australia?",
+    "respuestas": [
+      "Canberra"
+    ]
+  },
+  {
+    "enunciado": "¿En cuál país se celebró el Mundial de fútbol 2014?",
+    "respuestas": [
+      "Brazil",
+      "Brasil"
+    ]
+  }
+]

@@ -7,16 +7,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import socket.client2;
+import socket.Cliente;
 
 /**
  *
@@ -25,12 +21,13 @@ import socket.client2;
 public class FXMLDocumentController implements Initializable {
   
     @FXML private AnchorPane anchorPane;
-    @FXML
-    private Label label;
-    @FXML
-    private TextField textFieldDireccionIp;
-    @FXML
-    private TextField textFieldPuerto;
+    @FXML private Label label;
+    @FXML private TextField textFieldDireccionIp;
+    @FXML private TextField textFieldPuerto;
+    @FXML private Label labelPregunta;
+    @FXML private TextArea textAreaRespuesta;
+    @FXML private Label labelMensaje;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -44,16 +41,20 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void empezarJuego(ActionEvent event) throws IOException {   
-       client2 c = new client2();
-//       Socket socket = new Socket(c.host(textFieldDireccionIp.getText()), c.port(Integer.parseInt(textFieldPuerto.getText())));
-//       socket.connect(socket.getLocalSocketAddress());
-        
-        Parent parent = FXMLLoader.load(getClass().getResource("InterfazJuego.fxml"));
-        Scene scene = new Scene(parent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setTitle("Jugar");
-        window.setScene(scene);
-        window.show();
+        Cliente cliente = new Cliente();
+        Socket socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
+        cliente.enviar(socket);
+        cliente.recibir(socket);
+    }
+
+    @FXML
+    private void buttonEnviarRespuesta(ActionEvent event) {
+        if (!textAreaRespuesta.getText().equals("")) {
+            textAreaRespuesta.setText("");
+            labelMensaje.setText("Respuesta enviada.");
+        } else {
+            labelMensaje.setText("Debe escribir una respuesta.");
+        }
     }
     
 }
