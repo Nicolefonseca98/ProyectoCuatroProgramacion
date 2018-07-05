@@ -54,6 +54,6 @@ public class Cliente {
         in.read(bytes);
         String reply = new String(bytes, "UTF-8");
         System.out.println("Reply from server: " + reply.trim());
-        return reply;
+        return reply.trim();
     }
 }

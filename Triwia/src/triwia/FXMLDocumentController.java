@@ -59,7 +59,7 @@ public class FXMLDocumentController implements Initializable {
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
             Cliente cliente = new Cliente();
-            cliente.enviar(socket, numeroCliente + textAreaRespuesta.getText());
+            cliente.enviar(socket, numeroCliente + ": " + textAreaRespuesta.getText());
             String pregunta = cliente.recibir(socket);
             labelPregunta.setText(pregunta);
             textAreaRespuesta.setText("");

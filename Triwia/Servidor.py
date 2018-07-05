@@ -8,7 +8,6 @@ import json
 bandera = False      #Utilizada en la desconexion/conexion de clientes
 lista_de_clientes = ["2","1"]   #El servidor le asigna un numero a los
                                 #clientes segun esta lista
-diccionario = {}
 client = ""     # Numero del cliente
 lista = []
 
@@ -41,13 +40,11 @@ def conexiones(socket):
 
 #Envia un mensaje codificado a la direccion del cliente 1
 def enviar(conn):
+        diccionario = {}
         read = json.loads(open('preguntas.json').read())  
-        counter = 0
-        for i in read:
-        	diccionario=read[counter]['enunciado']
-        	counter + 1
-        	for x in diccionario:
-        		msg = diccionario
+        for i in range(len(read)):
+            diccionario[read[i]['enunciado']] = [read[i]['respuestas']]
+        msg = diccionario[0]
        	try:
             conn.send(msg.encode("UTF-8"))
         except:
@@ -69,7 +66,7 @@ def recibir(conn):
 
             elif reply[0] == "2":
                 print("Jugador ", reply )
-                start_new_thread(enviar2, (conn,))
+                start_new_thread(enviar, (conn,))
 
             else:
                 lista_de_clientes.append(reply[4])
@@ -110,16 +107,16 @@ def main():
     enviarEspecial(conn)               # Espero conexion del 1 cliente
     start_new_thread(recibir,(conn,))
 
-    # conn2,addr2 = conexiones(s)
-    # enviarEspecial(conn2)              # Espero conexion del 2 cliente
-    # start_new_thread(recibir,(conn2,))
+    conn2,addr2 = conexiones(s)
+    enviarEspecial(conn2)              # Espero conexion del 2 cliente
+    start_new_thread(recibir,(conn2,))
 
     while True: # Necesario para que los hilos no mueran
 
         if bandera != True:     # En caso de desconectarse un cliente,
                                 # esperara a que otro vuelve a conectarse
             conn3,addr3 = conexiones(s)
-            #enviarEspecial(conn3)
+            enviarEspecial(conn3)
             start_new_thread(recibir,(conn3,))
             bandera = False
 
