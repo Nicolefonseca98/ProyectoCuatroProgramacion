@@ -1,8 +1,10 @@
 
 package socket;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -39,25 +41,18 @@ public class Cliente {
         return socket;
     }
     
-    public void enviar(Socket socket) throws IOException {
-//        PrintWriter printWriter = new PrintWriter(socket.getOutputStream());
-//        printWriter.println("1 hola");
+    public void enviar(Socket socket, String mensaje) throws IOException {
        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-       bufferedWriter.write("1 hola");
+       bufferedWriter.write(mensaje);
        bufferedWriter.flush();
-//        printWriter.flush();
        
     }
 
     public void recibir(Socket socket) throws IOException {
-        InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
-        BufferedReader br = new BufferedReader(inputStreamReader);
-        StringBuilder sb = new StringBuilder();
-        String str;
-        while((str = br.readLine()) != null) {
-            sb.append(str + "\n");
-            System.out.println("The result is: "+str);
-        }
-        br.close();
+        DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+        byte[] bytes = new byte[1024];
+        in.read(bytes);
+        String reply = new String(bytes, "UTF-8");
+        System.out.println("Reply from server: " + reply.trim());
     }
 }

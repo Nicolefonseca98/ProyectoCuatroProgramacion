@@ -28,7 +28,7 @@ public class FXMLDocumentController implements Initializable {
     @FXML private TextArea textAreaRespuesta;
     @FXML private Label labelMensaje;
     
-    
+    Socket socket;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Fondo de la ventana
@@ -42,14 +42,15 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private void empezarJuego(ActionEvent event) throws IOException {   
         Cliente cliente = new Cliente();
-        Socket socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
-        cliente.enviar(socket);
-        cliente.recibir(socket);
+         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
     }
 
     @FXML
-    private void buttonEnviarRespuesta(ActionEvent event) {
+    private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
+            Cliente cliente = new Cliente();
+            cliente.enviar(socket, "1"+textAreaRespuesta.getText());
+            cliente.recibir(socket);
             textAreaRespuesta.setText("");
             labelMensaje.setText("Respuesta enviada.");
         } else {

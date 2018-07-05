@@ -9,6 +9,7 @@ bandera = False      #Utilizada en la desconexion/conexion de clientes
 lista_de_clientes = ["2","1"]   #El servidor le asigna un numero a los
                                 #clientes segun esta lista
 client = ""     # Numero del cliente
+lista = []
 
 #Funciones
 #Pide host y puerto
@@ -40,10 +41,8 @@ def conexiones(socket):
 #Envia un mensaje codificado a la direccion del cliente 1
 def enviar(conn):
 
-        #msg = input("")
-        msg="adios"
+        msg = input("Escriba algo")
         msg = "Servidor: " + msg
-        print("sending "+msg)
         try:
             conn.send(msg.encode("UTF-8"))
         except:
@@ -51,20 +50,20 @@ def enviar(conn):
             print("Try in 5 seg\n")
             time.sleep(5)
 
-#Envia un mensaje codificado a la direccion del cliente 2.
-def enviar2(conn):
+# #Envia un mensaje codificado a la direccion del cliente 2.
+# def enviar2(conn):
 
-        #msg = input("")
-        msg="adios"
-        msg = "Servidor: " + msg
-        try:
+#         #msg = input("")
+#         msg="adios"
+#         msg = "Servidor: " + msg
+#         try:
 
-            conn.send(msg.encode("UTF-8"))
+#             conn.send(msg.encode("UTF-8"))
 
-        except:
-            print("\nNo se pudo enviar2")
-            print("Try in 5 seg\n")
-            time.sleep(5)
+#         except:
+#             print("\nNo se pudo enviar2")
+#             print("Try in 5 seg\n")
+#             time.sleep(5)
 
 #Mensajes recibidos de los distintos clientes.
 #Llama a la funcion cuando recibe mensajes de los clientes.
@@ -101,9 +100,10 @@ def enviarEspecial(conn):
     conn.send(client.encode("UTF-8"))
 
 def leerJson():
-    read = json.loads(open('preguntas.json').read())
-    enunciado = read[0]['enunciado']
-    print (enunciado)
+    read = json.loads(open('preguntas.json').read())  
+    lista = read
+    for x in (lista):  
+        print(x)    
 
 #Método main
 def main():
@@ -117,7 +117,7 @@ def main():
     print("\nWaiting for clients")
 
     conn,addr = conexiones(s)
-    #enviarEspecial(conn)               # Espero conexion del 1 cliente
+    enviarEspecial(conn)               # Espero conexion del 1 cliente
     start_new_thread(recibir,(conn,))
 
     # conn2,addr2 = conexiones(s)
