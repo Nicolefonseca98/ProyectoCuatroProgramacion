@@ -1,4 +1,3 @@
-
 package triwia;
 
 import java.io.IOException;
@@ -19,16 +18,25 @@ import socket.Cliente;
  * @author Nicole Fonseca, Wilmer Mata.
  */
 public class FXMLDocumentController implements Initializable {
-  
-    @FXML private AnchorPane anchorPane;
-    @FXML private Label label;
-    @FXML private TextField textFieldDireccionIp;
-    @FXML private TextField textFieldPuerto;
-    @FXML private Label labelPregunta;
-    @FXML private TextArea textAreaRespuesta;
-    @FXML private Label labelMensaje;
+    
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private Label label;
+    @FXML
+    private TextField textFieldDireccionIp;
+    @FXML
+    private TextField textFieldPuerto;
+    @FXML
+    private Label labelPregunta;
+    @FXML
+    private TextArea textAreaRespuesta;
+    @FXML
+    private Label labelMensaje;
     
     Socket socket;
+    String numeroCliente;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Fondo de la ventana
@@ -38,19 +46,22 @@ public class FXMLDocumentController implements Initializable {
                 + "-fx-background-repeat: no-repeat;"
                 + "-fx-background-size: cover, auto;");
     }    
-
+    
     @FXML
-    private void empezarJuego(ActionEvent event) throws IOException {   
+    private void empezarJuego(ActionEvent event) throws IOException {        
         Cliente cliente = new Cliente();
-         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
+        socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
+        numeroCliente = cliente.recibir(socket);
+        
     }
-
+    
     @FXML
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
             Cliente cliente = new Cliente();
-            cliente.enviar(socket, "1"+textAreaRespuesta.getText());
-            cliente.recibir(socket);
+            cliente.enviar(socket, numeroCliente + textAreaRespuesta.getText());
+            String pregunta = cliente.recibir(socket);
+            labelPregunta.setText(pregunta);
             textAreaRespuesta.setText("");
             labelMensaje.setText("Respuesta enviada.");
         } else {

@@ -48,11 +48,12 @@ public class Cliente {
        
     }
 
-    public void recibir(Socket socket) throws IOException {
+    public String recibir(Socket socket) throws IOException {
         DataInputStream in = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
         byte[] bytes = new byte[1024];
         in.read(bytes);
         String reply = new String(bytes, "UTF-8");
         System.out.println("Reply from server: " + reply.trim());
+        return reply;
     }
 }

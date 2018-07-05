@@ -8,6 +8,7 @@ import json
 bandera = False      #Utilizada en la desconexion/conexion de clientes
 lista_de_clientes = ["2","1"]   #El servidor le asigna un numero a los
                                 #clientes segun esta lista
+diccionario = {}
 client = ""     # Numero del cliente
 lista = []
 
@@ -15,7 +16,7 @@ lista = []
 #Pide host y puerto
 def ini():
     host = input("Host: ")
-    port = int(input("Port: "))
+    port = int(input("Puerto: "))
     return host, port
 
 #Crea un nuevo socket
@@ -35,35 +36,24 @@ def ligarSocket(socket, host, port):
 #Espera por la conexión de clientes
 def conexiones(socket):
     conn, addr = socket.accept()
-    print("\nEstablished Connection.\nThe client is:", addr[0] + ":" + str(addr[1])+"\n")
+    print("\nConexion Establecida.\nEl jugador es: ", addr[0] + ":" + str(addr[1])+"\n")
     return conn, addr
 
 #Envia un mensaje codificado a la direccion del cliente 1
 def enviar(conn):
-
-        msg = input("Escriba algo")
-        msg = "Servidor: " + msg
-        try:
+        read = json.loads(open('preguntas.json').read())  
+        counter = 0
+        for i in read:
+        	diccionario=read[counter]['enunciado']
+        	counter + 1
+        	for x in diccionario:
+        		msg = diccionario
+       	try:
             conn.send(msg.encode("UTF-8"))
         except:
             print("\nNo se pudo enviar1\n")
-            print("Try in 5 seg\n")
+            print("Nuevo intento en 5 seg\n")
             time.sleep(5)
-
-# #Envia un mensaje codificado a la direccion del cliente 2.
-# def enviar2(conn):
-
-#         #msg = input("")
-#         msg="adios"
-#         msg = "Servidor: " + msg
-#         try:
-
-#             conn.send(msg.encode("UTF-8"))
-
-#         except:
-#             print("\nNo se pudo enviar2")
-#             print("Try in 5 seg\n")
-#             time.sleep(5)
 
 #Mensajes recibidos de los distintos clientes.
 #Llama a la funcion cuando recibe mensajes de los clientes.
@@ -74,22 +64,22 @@ def recibir(conn):
             reply = conn.recv(2048)
             reply = reply.decode("UTF-8")
             if reply[0] == "1":
-                print("Cliente", reply)
+                print("Jugador ", reply)
                 start_new_thread(enviar, (conn,))
 
             elif reply[0] == "2":
-                print("Cliente", reply)
+                print("Jugador ", reply )
                 start_new_thread(enviar2, (conn,))
 
             else:
                 lista_de_clientes.append(reply[4])
-                print("\nThe client "+reply[4]+" is gone")
+                print("\nEl jugador "+reply[4]+" se fue.")
                 bandera = True
                 break
 
         except:
-            print("\nCant recieve response")
-            print("Trying in 5 seg\n")
+            print("\nNo se pudo recibir respuesta.")
+            print("Intento en 5 seg\n")
             time.sleep(5)
 
 
@@ -114,7 +104,7 @@ def main():
     ligarSocket(s, host,port)
     s.listen(2)     # Espero 2 clientes
 
-    print("\nWaiting for clients")
+    print("\nEsperando por los jugadores.")
 
     conn,addr = conexiones(s)
     enviarEspecial(conn)               # Espero conexion del 1 cliente
