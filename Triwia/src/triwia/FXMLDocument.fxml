@@ -30,7 +30,7 @@
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
-      <Label fx:id="labelPregunta" layoutX="108.0" layoutY="230.0" prefHeight="26.0" prefWidth="538.0">
+      <Label fx:id="labelBienvenida" layoutX="99.0" layoutY="204.0" prefHeight="26.0" prefWidth="538.0">
          <font>
             <Font name="Arial" size="13.0" />
          </font>
@@ -42,5 +42,6 @@
          </font>
       </Button>
       <Label fx:id="labelMensaje" layoutX="67.0" layoutY="447.0" prefHeight="17.0" prefWidth="294.0" />
+      <Label fx:id="labelPregunta" layoutX="101.0" layoutY="234.0" prefHeight="25.0" prefWidth="545.0" />
     </children>
 </AnchorPane>

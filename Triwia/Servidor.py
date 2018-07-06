@@ -6,10 +6,8 @@ import json
 
 #Variables globales
 bandera = False      #Utilizada en la desconexion/conexion de clientes
-lista_de_clientes = ["2","1"]   #El servidor le asigna un numero a los
-                                #clientes segun esta lista
+lista_de_clientes = []  #El servidor le asigna un numero a los clientes según la lista
 client = ""     # Numero del cliente
-lista = []
 
 #Funciones
 #Pide host y puerto
@@ -38,13 +36,14 @@ def conexiones(socket):
     print("\nConexion Establecida.\nEl jugador es: ", addr[0] + ":" + str(addr[1])+"\n")
     return conn, addr
 
-#Envia un mensaje codificado a la direccion del cliente 1
+#Envia un mensaje codificado a la direccion de los clientes
 def enviar(conn):
         diccionario = {}
         read = json.loads(open('preguntas.json').read())  
         for i in range(len(read)):
             diccionario[read[i]['enunciado']] = [read[i]['respuestas']]
-        msg = diccionario[0]
+        for i in diccionario:
+            msg = i
        	try:
             conn.send(msg.encode("UTF-8"))
         except:
@@ -86,30 +85,24 @@ def enviarEspecial(conn):
     client = lista_de_clientes.pop()
     conn.send(client.encode("UTF-8"))
 
-def leerJson():
-    read = json.loads(open('preguntas.json').read())  
-    lista = read
-    for x in (lista):  
-        print(x)    
-
 #Método main
 def main():
-    leerJson()
     global bandera
     host,port = ini()
     s = crearSocket()
     ligarSocket(s, host,port)
-    s.listen(2)     # Espero 2 clientes
+    s.listen(10)  
 
     print("\nEsperando por los jugadores.")
 
-    conn,addr = conexiones(s)
-    enviarEspecial(conn)               # Espero conexion del 1 cliente
-    start_new_thread(recibir,(conn,))
-
-    conn2,addr2 = conexiones(s)
-    enviarEspecial(conn2)              # Espero conexion del 2 cliente
-    start_new_thread(recibir,(conn2,))
+    cantidadClientes = 0
+    while True:
+        cantidadClientes = cantidadClientes + 1
+        lista_de_clientes.append(str(cantidadClientes))
+        conn,addr = conexiones(s) 
+        enviarEspecial(conn) # Espero conexion de los jugadores
+        start_new_thread(enviar,(conn,))        
+        start_new_thread(recibir,(conn,))
 
     while True: # Necesario para que los hilos no mueran
 

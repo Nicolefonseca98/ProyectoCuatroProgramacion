@@ -33,6 +33,8 @@ public class FXMLDocumentController implements Initializable {
     private TextArea textAreaRespuesta;
     @FXML
     private Label labelMensaje;
+    @FXML 
+    private Label labelBienvenida;
     
     Socket socket;
     String numeroCliente;
@@ -52,7 +54,9 @@ public class FXMLDocumentController implements Initializable {
         Cliente cliente = new Cliente();
         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
         numeroCliente = cliente.recibir(socket);
-        
+        labelBienvenida.setText("Bienvenido jugador: " + numeroCliente);
+        String pregunta = cliente.recibir(socket);
+        labelPregunta.setText(pregunta);
     }
     
     @FXML

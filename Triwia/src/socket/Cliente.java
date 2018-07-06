@@ -45,7 +45,6 @@ public class Cliente {
        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
        bufferedWriter.write(mensaje);
        bufferedWriter.flush();
-       
     }
 
     public String recibir(Socket socket) throws IOException {
