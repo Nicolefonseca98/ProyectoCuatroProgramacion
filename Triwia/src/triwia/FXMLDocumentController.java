@@ -19,22 +19,14 @@ import socket.Cliente;
  */
 public class FXMLDocumentController implements Initializable {
     
-    @FXML
-    private AnchorPane anchorPane;
-    @FXML
-    private Label label;
-    @FXML
-    private TextField textFieldDireccionIp;
-    @FXML
-    private TextField textFieldPuerto;
-    @FXML
-    private Label labelPregunta;
-    @FXML
-    private TextArea textAreaRespuesta;
-    @FXML
-    private Label labelMensaje;
-    @FXML 
-    private Label labelBienvenida;
+    @FXML private AnchorPane anchorPane;
+    @FXML private Label label;
+    @FXML private TextField textFieldDireccionIp;
+    @FXML private TextField textFieldPuerto;
+    @FXML private Label labelPregunta;
+    @FXML private TextArea textAreaRespuesta;
+    @FXML private Label labelMensaje;
+    @FXML private Label labelBienvenida;
     
     Socket socket;
     String numeroCliente;

@@ -59,24 +59,28 @@ def recibir(conn):
         try:
             reply = conn.recv(2048)
             reply = reply.decode("UTF-8")
-            if reply[0] == "1":
-                print("Jugador ", reply)
-                start_new_thread(enviar, (conn,))
+            for x in lista_de_clientes:
+                    print(x)  
+                    if reply[0] == 1:
+                        print("Jugador ", reply)
+                        start_new_thread(enviar, (conn,))
 
-            elif reply[0] == "2":
-                print("Jugador ", reply )
-                start_new_thread(enviar, (conn,))
-
-            else:
-                lista_de_clientes.append(reply[4])
-                print("\nEl jugador "+reply[4]+" se fue.")
-                bandera = True
-                break
-
+            # elif reply[0] == "2":
+            #     print("Jugador ", reply )
+            #     start_new_thread(enviar, (conn,))
+    
+                #     else:
+                # lista_de_clientes.append(reply[4])
+                # print("\nEl jugador "+reply[4]+" se fue.")
+                # bandera = True
+                # break
         except:
             print("\nNo se pudo recibir respuesta.")
             print("Intento en 5 seg\n")
             time.sleep(5)
+def prueba():
+    for x in lista_de_clientes:
+        print(x)
 
 
 #El servidor asigna un numero a cada cliente y lo envia.
@@ -95,15 +99,16 @@ def main():
 
     print("\nEsperando por los jugadores.")
 
-    cantidadClientes = 0
-    while True:
-        cantidadClientes = cantidadClientes + 1
+    cantidadClientes = 1
+    while True: 
         lista_de_clientes.append(str(cantidadClientes))
         conn,addr = conexiones(s) 
         enviarEspecial(conn) # Espero conexion de los jugadores
+        prueba()
+        cantidadClientes = cantidadClientes + 1
         start_new_thread(enviar,(conn,))        
         start_new_thread(recibir,(conn,))
-
+    
     while True: # Necesario para que los hilos no mueran
 
         if bandera != True:     # En caso de desconectarse un cliente,

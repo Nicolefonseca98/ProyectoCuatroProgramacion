@@ -1,18 +1,11 @@
 
 package triwia;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import json.leerJson;
-import org.json.simple.parser.ParseException;
-import socket.Cliente;
 
 /**
  *
