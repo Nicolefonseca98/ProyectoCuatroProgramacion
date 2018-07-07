@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import socket.Cliente;
 
 /**
@@ -18,16 +20,24 @@ import socket.Cliente;
  * @author Nicole Fonseca, Wilmer Mata.
  */
 public class FXMLDocumentController implements Initializable {
-    
-    @FXML private AnchorPane anchorPane;
-    @FXML private Label label;
-    @FXML private TextField textFieldDireccionIp;
-    @FXML private TextField textFieldPuerto;
-    @FXML private Label labelPregunta;
-    @FXML private TextArea textAreaRespuesta;
-    @FXML private Label labelMensaje;
-    @FXML private Label labelBienvenida;
-    
+
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private Label label;
+    @FXML
+    private TextField textFieldDireccionIp;
+    @FXML
+    private TextField textFieldPuerto;
+    @FXML
+    private Label labelPregunta;
+    @FXML
+    private TextArea textAreaRespuesta;
+    @FXML
+    private Label labelMensaje;
+    @FXML
+    private Label labelBienvenida;
+
     Socket socket;
     String numeroCliente;
 
@@ -39,10 +49,10 @@ public class FXMLDocumentController implements Initializable {
                 + "-fx-background-position: left top, center;"
                 + "-fx-background-repeat: no-repeat;"
                 + "-fx-background-size: cover, auto;");
-    }    
-    
+    }
+
     @FXML
-    private void empezarJuego(ActionEvent event) throws IOException {        
+    private void empezarJuego(ActionEvent event) throws IOException {
         Cliente cliente = new Cliente();
         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
         numeroCliente = cliente.recibir(socket);
@@ -50,7 +60,7 @@ public class FXMLDocumentController implements Initializable {
         String pregunta = cliente.recibir(socket);
         labelPregunta.setText(pregunta);
     }
-    
+
     @FXML
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
@@ -64,5 +74,14 @@ public class FXMLDocumentController implements Initializable {
             labelMensaje.setText("Debe escribir una respuesta.");
         }
     }
-    
+
+    public static void JsonParser(JSONObject jsonObject) {
+
+        JSONParser parser = new JSONParser();
+
+//        JSONObject json = (JSONObject) parser.parse(jsonObject);
+//
+//        String title = (String) json.get("title");
+    }
+
 }
