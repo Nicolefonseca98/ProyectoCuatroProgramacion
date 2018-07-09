@@ -1,11 +1,14 @@
 
 package triwia;
 
+import java.io.IOException;
+import java.net.Socket;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import socket.Cliente;
 
 /**
  *
@@ -27,10 +30,14 @@ public class Triwia extends Application {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         launch(args);
-
+//        Cliente c = new Cliente();
+//        Socket s = c.creaSocket("localhost", 5000);
+//        c.recibir(s);
+//        c.enviar(s, "1hola");
+//        c.recibir(s);
     }
     
 }

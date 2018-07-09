@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -57,8 +60,25 @@ public class FXMLDocumentController implements Initializable {
         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
         numeroCliente = cliente.recibir(socket);
         labelBienvenida.setText("Bienvenido jugador: " + numeroCliente);
-        String pregunta = cliente.recibir(socket);
-        labelPregunta.setText(pregunta);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                String pregunta = cliente.recibir(socket);
+                                labelPregunta.setText(pregunta);
+                                Thread.sleep(1000);
+                            } catch (IOException ex) {
+                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        }
+                    });
+                }
+        }).start();
     }
 
     @FXML
@@ -66,8 +86,6 @@ public class FXMLDocumentController implements Initializable {
         if (!textAreaRespuesta.getText().equals("")) {
             Cliente cliente = new Cliente();
             cliente.enviar(socket, numeroCliente + ": " + textAreaRespuesta.getText());
-            String pregunta = cliente.recibir(socket);
-            labelPregunta.setText(pregunta);
             textAreaRespuesta.setText("");
             labelMensaje.setText("Respuesta enviada.");
         } else {
