@@ -53,7 +53,7 @@ public class FXMLDocumentController implements Initializable {
                 + "-fx-background-repeat: no-repeat;"
                 + "-fx-background-size: cover, auto;");
     }
-
+    String pregunta;
     @FXML
     private void empezarJuego(ActionEvent event) throws IOException {
         Cliente cliente = new Cliente();
@@ -63,23 +63,25 @@ public class FXMLDocumentController implements Initializable {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                String pregunta = cliente.recibir(socket);
+                while (true) {
+                    try {
+                        pregunta = cliente.recibir(socket);
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
                                 labelPregunta.setText(pregunta);
-                                Thread.sleep(1000);
-                            } catch (IOException ex) {
-                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (InterruptedException ex) {
-                                Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                                //Thread.sleep(1000);
                             }
-                        }
-                    });
+                        });
+
+                    } catch (IOException ex) {
+                        Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                    } 
                 }
+            }
         }).start();
     }
+    
 
     @FXML
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {

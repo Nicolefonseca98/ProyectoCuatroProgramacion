@@ -9,15 +9,14 @@ import threading
 bandera = False      	 		#Utilizada en la desconexion/conexion de clientes.
 aceptaConexiones = True  		#Acepta conexiones de los clientes.
 lista_de_clientes = []   		#Lista de clientes que se conectan, guarda el numero del cliente.
-diccionario_de_respuestas = {}  #Lista de respuestas a evaluar, se guarda el numero del cliente y la respuesta.
+#diccionario_de_respuestas = {}  #Lista de respuestas a evaluar, se guarda el numero del cliente y la respuesta.
 diccionario = {}		 		#Diccionario que contiene las preguntas y sus respuestas.
 lista_preguntas = []			#Lista con las preguntas a realizar.
-diccionario_mensajes = {}		#Diccionario que contiene los diferentes mensajes para enviar al cliente.
 lista_conexiones = []			#Guarda la conexion de cada cliente.
 lista_hilos_cliente = []		#Guarda el hilo de cada cliente para empezar a recibir respuestas.
 historial = {}					#Guarda las respuestas correctas e incorrectas de cada cliente para mostrar un historial
 								# al final de cada partida.
-
+lista_respuestas = []
 #Funciones
 #Pide host y puerto
 def ini():
@@ -44,12 +43,6 @@ def conexiones(socket):
     conn, addr = socket.accept()
     print("\nConexion Establecida.\nEl jugador es: ", addr[0] + ":" + str(addr[1])+"\n")
     return conn, addr
-
-#Llena diccionario con mensajes para enviar a los jugadores
-def llenaDiccionarioMensajes():
-	global diccionario_mensajes
-	diccionario_mensajes['error'] = "Respuesta incorrecta"
-	diccionario_mensajes['informacion'] = "Bienvenido"
 
 #Envia un mensaje codificado a la direccion de los clientes
 def enviar(conn, mensaje):
@@ -86,10 +79,9 @@ def recibir(conn):
 			for x in lista_de_clientes:
 				if reply[0] == str(x):
 					print("Jugador ", reply)
-					diccionario_de_respuestas[reply[0]] = reply[3: len(reply)]
-				else:
-					bandera = True
-					break
+					lista_respuestas.append(reply[0]+reply[3:len(reply)])
+					print(reply, "res")
+					#diccionario_de_respuestas[reply[0]] = reply[3: len(reply)]
 		except:
 		   	print("No se pudo recibir respuesta")
 		   	time.sleep(5)
@@ -99,14 +91,19 @@ def recibir(conn):
 # que ingresa como parametro.
 def verificaRespuesta(pregunta):
 	mensaje = False
-	global diccionario, diccionario_de_respuestas, historial
+	global diccionario, lista_respuestas, historial, lista_conexiones
 	for x in diccionario:
 		if x == pregunta:
-			for i in diccionario_de_respuestas:
+			for i in lista_respuestas:
+				respuesta = i[1:len(i)]
 				for y in diccionario[x]:
-					if diccionario_de_respuestas[i] == y:
-						historial[i] = "Respuesta correcta" 
+					if respuesta == y:
+						historial[i[0]] = "Respuesta correcta"
+						print(i[0]) 
+						#print(lista_conexiones[int(i[0])])
+						#enviar(lista_conexiones[int(i[0])], "Respuesta correcta")
 						mensaje = True
+						break
 					else:
 						historial['Jugador ',i] = "Respuesta incorrecta"
 						mensaje = False
@@ -122,11 +119,6 @@ def enviarPregunta(counter):
 	global lista_preguntas
 	return lista_preguntas[counter]
 
-def iniciarHilos():
-	global  lista_hilos_cliente
-	for x in lista_hilos_cliente:
-		x.start()
-
 #Método main
 def main():
     global bandera, lista_conexiones, lista_preguntas, lista_hilos_cliente, aceptaConexiones
@@ -139,13 +131,15 @@ def main():
 
     print("\nFase de conexiones.","\nEsperando por los jugadores.")
     cantidadClientes = 1
+
     #Fase de conexiones
     while aceptaConexiones == True:
     	conn, addr = conexiones(s)
     	enviarNumeroJugador(conn, cantidadClientes)
     	lista_de_clientes.append(str(cantidadClientes))
     	lista_conexiones.append(conn)
-    	
+    	hilo = threading.Thread(target= recibir, args=(conn,))
+    	lista_hilos_cliente.append(hilo)
     	print("Esperando jugadores")
     	cantidadClientes = cantidadClientes + 1
     	if len(lista_de_clientes) >= 2:
@@ -157,26 +151,29 @@ def main():
     			print("Bienvenido a la fase de preguntas")
     			break
     			
-
+    for i in lista_hilos_cliente:
+    	i.start()
+    aceptaRespuestas = True
     #Fase de preguntas		
     while True:
     	pregunta = input("¿Enviar pregunta? Ingrese si o no: ")
+    	aceptaRespuestas = True
     	if pregunta == "si":
     		for x in lista_conexiones:
+    			print(counter)
     			start_new_thread(enviar,(x, enviarPregunta(counter)))
-    			hilo = threading.Thread()
-    			lista_hilos_cliente.append(hilo)
-    		iniciarHilos()
-    		if(verificaRespuesta(enviarPregunta(counter)) == True):
-    			counter = counter + 1
-    			print("Respuesta correcta")
-    			pass
+    		while aceptaRespuestas == True:
+    			if(verificaRespuesta(enviarPregunta(counter)) == True):
+    				print("Respuesta correcta")  				
+    				counter = counter + 1
+    				aceptaRespuestas = False
+    			else:
+    				pass
     	elif pregunta == "no":
     		pass
     	else: 
     		print("La indicacion no es correcta")
     		break
-
 
     while True: # Necesario para que los hilos no mueran
 

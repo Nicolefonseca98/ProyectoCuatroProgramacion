@@ -18,5 +18,93 @@
       "Brazil",
       "Brasil"
     ]
+  },
+  {
+    "enunciado": "¿Cuál es el lugar más frío de la tierra?",
+    "respuestas": [
+      "La Antartida",
+      "Antartida"
+    ]
+  },
+  {
+    "enunciado": "¿Quién escribió La Odisea?",
+    "respuestas": [
+      "Homero"
+    ]
+  },
+  {
+    "enunciado": "¿En qué año acabó la segunda Guerra Mundial?",
+    "respuestas": [
+      "1945"
+    ]
+  },
+  {
+    "enunciado": "¿En qué país se encuentra la torre de Pisa?",
+    "respuestas": [
+      "Italia"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es el país más grande del mundo?",
+    "respuestas": [
+      "Rusia"
+    ]
+  },
+  {
+    "enunciado": "¿Cual es país más poblado de la Tierra?",
+    "respuestas": [
+      "China"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es el único mamífero capaz de volar?",
+    "respuestas": [
+      "Murciélago",
+      "Murcielago"
+    ]
+  },
+  {
+    "enunciado": "¿Quién ganó el mundial de 2014?",
+    "respuestas": [
+      "Alemania"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es la capital de Francia?",
+    "respuestas": [
+      "París"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es el río más largo del mundo?",
+    "respuestas": [
+      "Amazonas"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es el libro sagrado del Islam?",
+    "respuestas": [
+      "Corán",
+      "El corán"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es la capital de Turquía?",
+    "respuestas": [
+      "Ankara"
+    ]
+  },
+  {
+    "enunciado": "¿Cuál es la capital de Suecia?",
+    "respuestas": [
+      "Estocolmo"
+    ]
+  },
+  {
+    "enunciado": "¿En qué país se encuentra el Taj Mahal?",
+    "respuestas": [
+      "India",
+      "La india"
+    ]
   }
 ]
