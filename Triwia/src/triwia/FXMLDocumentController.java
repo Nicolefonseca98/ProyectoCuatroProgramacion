@@ -9,13 +9,19 @@ import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import socket.Cliente;
 
 /**
@@ -54,12 +60,14 @@ public class FXMLDocumentController implements Initializable {
                 + "-fx-background-size: cover, auto;");
     }
     String pregunta;
+    char num;
     @FXML
-    private void empezarJuego(ActionEvent event) throws IOException {
+    private void empezarJuego(ActionEvent event) throws IOException, ParseException {
         Cliente cliente = new Cliente();
         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
         numeroCliente = cliente.recibir(socket);
-        labelBienvenida.setText("Bienvenido jugador: " + numeroCliente);
+        num = numeroCliente.charAt(numeroCliente.length()-3);
+        labelBienvenida.setText(jsonParser(numeroCliente));
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -69,8 +77,19 @@ public class FXMLDocumentController implements Initializable {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
-                                labelPregunta.setText(pregunta);
-                                //Thread.sleep(1000);
+                                try {
+                                    labelPregunta.setText(jsonParser(pregunta));
+                                    labelMensaje.setText("");
+                                    if (pregunta.equals("Partida terminada")){
+                                        try {
+                                            cambioScene("Ganador.fxml");
+                                        } catch (IOException ex) {
+                                            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                                        }
+                                    }
+                                } catch (ParseException ex) {
+                                    Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                             }
                         });
 
@@ -87,7 +106,7 @@ public class FXMLDocumentController implements Initializable {
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
             Cliente cliente = new Cliente();
-            cliente.enviar(socket, numeroCliente + ": " + textAreaRespuesta.getText());
+            cliente.enviar(socket, num + ": " + textAreaRespuesta.getText());
             textAreaRespuesta.setText("");
             labelMensaje.setText("Respuesta enviada.");
         } else {
@@ -95,13 +114,26 @@ public class FXMLDocumentController implements Initializable {
         }
     }
 
-    public static void JsonParser(JSONObject jsonObject) {
-
+    public String jsonParser(String mensaje) throws ParseException {
         JSONParser parser = new JSONParser();
+        JSONObject json = (JSONObject) parser.parse(mensaje);
+        String mensajeJson = (String) json.get("valor");
+        return mensajeJson;
+    }
+    
+    private void cambioScene(String destino) throws IOException {
+        Parent tableViewParent = FXMLLoader.load(getClass().getResource(destino));
+        Scene tableViewScene = new Scene(tableViewParent);
+        //Esta linea obtiene la informacion del Stage
+        Stage window = (Stage) ((Node) anchorPane).getScene().getWindow();
 
-//        JSONObject json = (JSONObject) parser.parse(jsonObject);
-//
-//        String title = (String) json.get("title");
+        window.setScene(tableViewScene);
+        window.setResizable(false);
+        window.setX(0);
+        window.setY(0);
+        window.setFullScreen(true);
+        window.show();
+
     }
 
 }

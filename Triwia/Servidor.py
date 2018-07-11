@@ -9,14 +9,15 @@ import threading
 bandera = False      	 		#Utilizada en la desconexion/conexion de clientes.
 aceptaConexiones = True  		#Acepta conexiones de los clientes.
 lista_de_clientes = []   		#Lista de clientes que se conectan, guarda el numero del cliente.
-#diccionario_de_respuestas = {}  #Lista de respuestas a evaluar, se guarda el numero del cliente y la respuesta.
+lista_respuestas = []  			#Lista de respuestas a evaluar, se guarda el numero del cliente y la respuesta.
 diccionario = {}		 		#Diccionario que contiene las preguntas y sus respuestas.
 lista_preguntas = []			#Lista con las preguntas a realizar.
 lista_conexiones = []			#Guarda la conexion de cada cliente.
 lista_hilos_cliente = []		#Guarda el hilo de cada cliente para empezar a recibir respuestas.
 historial = {}					#Guarda las respuestas correctas e incorrectas de cada cliente para mostrar un historial
 								# al final de cada partida.
-lista_respuestas = []
+counter = 0
+
 #Funciones
 #Pide host y puerto
 def ini():
@@ -46,17 +47,12 @@ def conexiones(socket):
 
 #Envia un mensaje codificado a la direccion de los clientes
 def enviar(conn, mensaje):
-        # global diccionario
-        # read = json.loads(open('preguntas.json').read())
-        # for x in range(len(read)):
-        #     diccionario[read[x]['enunciado']] = [read[x]['respuestas']]
-        # for i in diccionario:
-       	try:
-       		conn.send(mensaje.encode("UTF-8"))
-        except:
-            print("\nNo se pudo enviar\n")
-            print("Nuevo intento en 5 seg\n")
-            time.sleep(5)
+    try:
+       	conn.send(mensaje.encode("UTF-8"))
+    except:
+        print("\nNo se pudo enviar\n")
+        print("Nuevo intento en 5 seg\n")
+        time.sleep(5)
 
 #Lee el archivo y llena el diccionario con la pregunta y su respuesta
 # y una lista solo con las preguntas
@@ -80,8 +76,6 @@ def recibir(conn):
 				if reply[0] == str(x):
 					print("Jugador ", reply)
 					lista_respuestas.append(reply[0]+reply[3:len(reply)])
-					print(reply, "res")
-					#diccionario_de_respuestas[reply[0]] = reply[3: len(reply)]
 		except:
 		   	print("No se pudo recibir respuesta")
 		   	time.sleep(5)
@@ -91,28 +85,50 @@ def recibir(conn):
 # que ingresa como parametro.
 def verificaRespuesta(pregunta):
 	mensaje = False
-	global diccionario, lista_respuestas, historial, lista_conexiones
+	global diccionario, lista_respuestas, historial, lista_conexiones, counter
 	for x in diccionario:
 		if x == pregunta:
 			for i in lista_respuestas:
 				respuesta = i[1:len(i)]
 				for y in diccionario[x]:
 					if respuesta == y:
-						historial[i[0]] = "Respuesta correcta"
-						print(i[0]) 
-						#print(lista_conexiones[int(i[0])])
-						#enviar(lista_conexiones[int(i[0])], "Respuesta correcta")
+						existeJugador, count = prueba(i[0])
+						if existeJugador:
+							print(count, "soy count")
+							historial['Respuestas correctas jugador ',i[0]] = count
+							print(historial)
+						else:
+							historial['Respuestas correctas jugador ',i[0]] = 1
 						mensaje = True
+						for conexion in lista_conexiones:
+							msj = {"mensaje": "informacion", "valor": "Respuesta correcta del jugador " + i[0]}
+							msjJson = json.dumps(msj)
+							enviar(conexion, msjJson)
 						break
 					else:
-						historial['Jugador ',i] = "Respuesta incorrecta"
 						mensaje = False
 	return mensaje
+
+def prueba(jugador):
+	global historial
+	for x in historial:
+		if x[1] == jugador:
+			count = historial[x]
+			count = int(count) + 1
+			print(count, "soy count 2")
+			historial.pop(x)
+			return True, count
+		else:
+			pass
+
+
           
 #El servidor asigna un numero a cada cliente y lo envia.
 def enviarNumeroJugador(conn, numeroCliente):
     global lista_de_clientes
-    conn.send(str(numeroCliente).encode("UTF-8"))
+    msj = {"mensaje": "conexion", "valor": "Bienvenido jugador " + str(numeroCliente)}
+    msjJson = json.dumps(msj)
+    conn.send(msjJson.encode("UTF-8"))
 
 #Método para enviar una pregunta a la vez a los jugadores
 def enviarPregunta(counter):
@@ -121,7 +137,7 @@ def enviarPregunta(counter):
 
 #Método main
 def main():
-    global bandera, lista_conexiones, lista_preguntas, lista_hilos_cliente, aceptaConexiones
+    global bandera, lista_conexiones, lista_preguntas, lista_hilos_cliente, aceptaConexiones, historial
     leerJson()
     host,port = ini()
     s = crearSocket()
@@ -154,14 +170,17 @@ def main():
     for i in lista_hilos_cliente:
     	i.start()
     aceptaRespuestas = True
+
     #Fase de preguntas		
     while True:
     	pregunta = input("¿Enviar pregunta? Ingrese si o no: ")
     	aceptaRespuestas = True
     	if pregunta == "si":
     		for x in lista_conexiones:
-    			print(counter)
-    			start_new_thread(enviar,(x, enviarPregunta(counter)))
+    			preg = {"mensaje": "pregunta", "valor": enviarPregunta(counter)}
+    			pregJson = json.dumps(preg)
+    			start_new_thread(enviar,(x, pregJson))
+    		print("Enviando pregunta")
     		while aceptaRespuestas == True:
     			if(verificaRespuesta(enviarPregunta(counter)) == True):
     				print("Respuesta correcta")  				
@@ -170,10 +189,17 @@ def main():
     			else:
     				pass
     	elif pregunta == "no":
-    		pass
+    		for conexion in lista_conexiones:
+    			msj = {"mensaje": "fin", "valor": "Partida terminada"}
+    			msjJson = json.dumps(msj)
+    			#enviar(conexion, msjJson)
+    			enviar(conexion, "Partida terminada")
+    		print("Partida terminada")
+    		print(historial)
+    		break
     	else: 
     		print("La indicacion no es correcta")
-    		break
+    		pass
 
     while True: # Necesario para que los hilos no mueran
 

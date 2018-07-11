@@ -31,11 +31,6 @@ public class Triwia extends Application {
     public static void main(String[] args) throws IOException {
 
         launch(args);
-//        Cliente c = new Cliente();
-//        Socket s = c.creaSocket("localhost", 5000);
-//        c.recibir(s);
-//        c.enviar(s, "1hola");
-//        c.recibir(s);
     }
     
 }
