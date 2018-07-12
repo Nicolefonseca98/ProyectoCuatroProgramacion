@@ -63,6 +63,7 @@ public class FXMLDocumentController implements Initializable {
     char num;
     @FXML
     private void empezarJuego(ActionEvent event) throws IOException, ParseException {
+        try {
         Cliente cliente = new Cliente();
         socket = cliente.creaSocket(textFieldDireccionIp.getText(), Integer.parseInt(textFieldPuerto.getText()));
         numeroCliente = cliente.recibir(socket);
@@ -78,13 +79,13 @@ public class FXMLDocumentController implements Initializable {
                             @Override
                             public void run() {
                                 try {
+                                    String preg = jsonParser(pregunta);
                                     labelPregunta.setText(jsonParser(pregunta));
                                     labelMensaje.setText("");
-                                    if (pregunta.equals("Partida terminada")){
+                                    if (preg.equals("Partida terminada")){
                                         try {
                                             cambioScene("Ganador.fxml");
-                                        } catch (IOException ex) {
-                                            Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                                        } catch (IOException ex) {    
                                         }
                                     }
                                 } catch (ParseException ex) {
@@ -94,11 +95,14 @@ public class FXMLDocumentController implements Initializable {
                         });
 
                     } catch (IOException ex) {
-                        Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
+                        labelBienvenida.setText("No se puede conectar.");
                     } 
                 }
             }
         }).start();
+        } catch (Exception exception) {
+            labelBienvenida.setText("No se puede conectar.");
+        }
     }
     
 
