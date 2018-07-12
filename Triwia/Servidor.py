@@ -137,9 +137,15 @@ def enviarPregunta(counter):
 
 def ganador():
 	global ranking
+	a = 0
 	for x in ranking:
-		a = ranking[x]
-		
+		if a < int(ranking[x]):
+			a = int(ranking[x])
+		else:
+			pass
+	for y in ranking:
+		if a == ranking[y]:
+			return str(y[1])
 
 #Método main
 def main():
@@ -207,21 +213,26 @@ def main():
     			else:
     				pass
     	elif pregunta == "no":
-    		for conexion in lista_conexiones:
-    			msj = {"mensaje": "fin", "valor": "Partida terminada"}
-    			msjJson = json.dumps(msj)
-    			enviar(conexion, msjJson)
     		print("\n***Partida terminada***")
     		print("***RANKING***\n")
     		print(ranking)
     		print("\n***HISTORIAL***")
     		for h in historial:
     			print(h , historial[h])
+    		g = ganador()
+    		for x in lista_conexiones:
+    			msj = {"mensaje": "informacion", "valor": "Ha ganado"}
+    			msjJson = json.dumps(msj)
+    			enviar(lista_conexiones[int(g)-1], msjJson)
+    			if x != lista_conexiones[int(g)-1]:
+    				msj = {"mensaje": "informacion", "valor": "Ha perdido"}
+    				msjJson = json.dumps(msj)
+    				enviar(x, msjJson)
+
     		break
     	else: 
     		print("La indicacion no es correcta.")
     		pass
-    ganador()
     print("Cerrando conexiones.")
     s.close()
 

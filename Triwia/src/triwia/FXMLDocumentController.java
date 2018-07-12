@@ -82,11 +82,13 @@ public class FXMLDocumentController implements Initializable {
                                     String preg = jsonParser(pregunta);
                                     labelPregunta.setText(jsonParser(pregunta));
                                     labelMensaje.setText("");
-                                    if (preg.equals("Partida terminada")){
-                                        try {
+                                    try {
+                                        if (preg.equals("Ha ganado")) {
                                             cambioScene("Ganador.fxml");
-                                        } catch (IOException ex) {    
+                                        } else if (preg.equals("Ha perdido")) {
+                                            cambioScene("Perdedor.fxml");
                                         }
+                                    } catch (IOException exception) {
                                     }
                                 } catch (ParseException ex) {
                                     Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,7 +107,6 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-
     @FXML
     private void buttonEnviarRespuesta(ActionEvent event) throws IOException {
         if (!textAreaRespuesta.getText().equals("")) {
