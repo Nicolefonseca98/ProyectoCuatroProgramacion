@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package triwia;
 
 import java.net.URL;
@@ -13,24 +18,27 @@ import javafx.util.Duration;
 /**
  * FXML Controller class
  *
- * @author Nicole
+ * @author Wilmata
  */
-public class GanadorController implements Initializable {
+public class PerdedorController implements Initializable {
 
     @FXML
     private ImageView textoImageView;
-    @FXML 
+    @FXML
     private ImageView gif1ImageView;
-    @FXML 
+    @FXML
     private ImageView gif2ImageView;
 
+    /**
+     * Initializes the controller class.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Image texto = new Image("/imagenes/ganador.gif");
+        Image texto = new Image("/imagenes/perdedor.gif");
         textoImageView.setImage(texto);
-        Image gif1 = new Image("/imagenes/rick1.gif");
+        Image gif1 = new Image("/imagenes/rick3.gif");
         gif1ImageView.setImage(gif1);
-        Image gif2 = new Image("/imagenes/pickleRick.gif");
+        Image gif2 = new Image("/imagenes/rick2.gif");
         gif2ImageView.setImage(gif2);
         Line line = new Line(-300, 20, 800, 20);
         PathTransition transition = new PathTransition();
@@ -39,7 +47,6 @@ public class GanadorController implements Initializable {
         transition.setPath(line);
         transition.setCycleCount(PathTransition.INDEFINITE);
         transition.play();
-
     }
 
 }
