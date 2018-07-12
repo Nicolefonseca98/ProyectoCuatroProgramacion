@@ -17,20 +17,6 @@ public class Cliente {
     Boolean exit = false;
     String cliente = "";
     
-//    public String host() {
-//        System.out.println("host");
-//        Scanner sc = new Scanner(System.in);
-//        String host = sc.nextLine();
-//        return host;
-//    }
-//    
-//    public int port() {
-//        System.out.println("Port");
-//        Scanner sc = new Scanner(System.in);
-//        int port = sc.nextInt();
-//        return port;
-//    }
-    
     public Socket creaSocket(String host, int port) throws IOException {
         Socket socket = new Socket(host, port);
         return socket;

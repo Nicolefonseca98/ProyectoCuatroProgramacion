@@ -221,14 +221,14 @@ def main():
     			print(h , historial[h])
     		g = ganador()
     		for x in lista_conexiones:
-    			msj = {"mensaje": "informacion", "valor": "Ha ganado"}
+    			msj = {"mensaje": "ganador", "valor": str(ranking)}
     			msjJson = json.dumps(msj)
     			enviar(lista_conexiones[int(g)-1], msjJson)
     			if x != lista_conexiones[int(g)-1]:
-    				msj = {"mensaje": "informacion", "valor": "Ha perdido"}
+    				msj = {"mensaje": "perdedor", "valor": str(ranking)}
     				msjJson = json.dumps(msj)
     				enviar(x, msjJson)
-
+    			
     		break
     	else: 
     		print("La indicacion no es correcta.")
