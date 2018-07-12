@@ -5,11 +5,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="743.0" style="-fx-background-color: #000033;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="triwia.PerdedorController">
+<AnchorPane id="AnchorPane" prefHeight="510.0" prefWidth="743.0" style="-fx-background-color: #FF3333;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="triwia.PerdedorController">
    <children>
       <ImageView fx:id="textoImageView" fitHeight="82.0" fitWidth="419.0" layoutX="108.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="gif1ImageView" fitHeight="204.0" fitWidth="161.0" layoutX="36.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="gif2ImageView" fitHeight="157.0" fitWidth="161.0" layoutX="537.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="gif2ImageView" fitHeight="157.0" fitWidth="161.0" layoutX="568.0" layoutY="339.0" pickOnBounds="true" preserveRatio="true" />
       <Label fx:id="rankingLabel" alignment="CENTER" layoutX="12.0" layoutY="119.0" prefHeight="183.0" prefWidth="724.0" textAlignment="CENTER">
          <font>
             <Font name="Arial" size="14.0" />
