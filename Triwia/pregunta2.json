@@ -1,0 +1,81 @@
+[
+  {
+    "enunciado": "¿Donde se originaron los Juegos Olímpicos?",
+    "respuestas": [
+      "Grecia"
+    ]
+  },
+  {
+    "enunciado": "¿De que lengua proviene el español?",
+    "respuestas": [
+      "Latin"
+    ]
+  },
+  {
+    "enunciado": "¿Como se llama el estadio del F.C. Barcelona?",
+    "respuestas": [
+      "Camp Nou"
+    ]
+  },
+{
+    "enunciado": "¿En que pais se encuentra el Taj Mahal?",
+    "respuestas": [
+      "India"
+    ]
+  },
+{
+    "enunciado": "¿Como se llama el primer mamifero clonado?",
+    "respuestas": [
+      "Dolly"
+    ]
+  },
+{
+    "enunciado": "¿Cual es el pais mas poblado del mundo?",
+    "respuestas": [
+      "China"
+    ]
+  },
+{
+    "enunciado": "¿Cuantos años tiene un lustro",
+    "respuestas": [
+      "5",
+      "cinco",
+      "Quinquenio"
+    ]
+  },
+{
+    "enunciado": "¿Cual es la capital de Suecia",
+    "respuestas": [
+      "Estocolmo"
+    ]
+  },
+{
+    "enunciado": "¿En cual comic aparecio por primera vez Spider Man?",
+    "respuestas": [
+      "Amazing Fantasy",
+      "Amazing Fantasy 15"
+    ]
+  },
+{
+    "enunciado": "¿Cual es el nombre del estadio de Liga Deportiva Alajuelense?",
+    "respuestas": [
+    "Alejandro Morera Soto",
+    "Estadio Alejandro Morera Soto",
+    "La catedral del futbol"
+    ]
+  },
+{
+    "enunciado": "¿En que año Saprissa fue al Mundial de Clubes",
+    "respuestas": [
+      "2005"
+    ]
+  },
+{
+    "enunciado": "¿Cuales son las siglas del curso Programacion II?",
+    "respuestas": [
+    "IF-3000",
+    "IF3000"
+    ]
+  }
+
+]

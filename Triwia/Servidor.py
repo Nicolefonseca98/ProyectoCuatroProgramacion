@@ -4,7 +4,7 @@ import time
 import sys
 import json
 import threading
-import pdb
+
 #Variables globales
 aceptaConexiones = True  		#Acepta conexiones de los clientes.
 lista_de_clientes = []   		#Lista de clientes que se conectan, guarda el numero del cliente.
@@ -18,18 +18,18 @@ ranking = {}					#Guarda las respuestas correctas de cada cliente para mostrar u
 historial = {}					#Guarda todas las preguntas realizadas y el jugador que contestó correctamente
 
 #Funciones
-#Pide host y puerto
+#Pide host y puerto.
 def ini():
     host = input("Host: ")
     port = int(input("Puerto: "))
     return host, port
 
-#Crea un nuevo socket
+#Crea un nuevo socket.
 def crearSocket():
     s = socket(AF_INET, SOCK_STREAM)
     return s
 
-#Intenta ligar un socket con los parametros host y port
+#Intenta ligar un socket con los parametros host y port.
 def ligarSocket(socket, host, port):
     while True:
         try:
@@ -38,13 +38,13 @@ def ligarSocket(socket, host, port):
         except error as e:
             print("No se puede conectar.")
 
-#Espera por la conexión de clientes
+#Espera por la conexión de clientes.
 def conexiones(socket):
     conn, addr = socket.accept()
     print("\nConexion Establecida.\nEl jugador es: ", addr[0] + ":" + str(addr[1])+"\n")
     return conn, addr
 
-#Envia un mensaje codificado a la direccion de los clientes
+#Envia un mensaje codificado a la direccion de los clientes.
 def enviar(conn, mensaje):
     try:
        	conn.send(mensaje.encode("UTF-8"))
@@ -54,7 +54,7 @@ def enviar(conn, mensaje):
         time.sleep(5)
 
 #Lee el archivo y llena el diccionario con la pregunta y su respuesta
-# y una lista solo con las preguntas
+# y una lista solo con las preguntas.
 def leerJson():
 	global diccionario, lista_preguntas
 	print("**Cargar archivo con preguntas**")
@@ -135,6 +135,8 @@ def enviarPregunta(counter):
 	global lista_preguntas
 	return lista_preguntas[counter]
 
+#Revisa en el ranking cual es el jugador con más respuestas acertadas
+#para determinar un ganador.
 def ganador():
 	global ranking
 	a = 0
@@ -146,6 +148,22 @@ def ganador():
 	for y in ranking:
 		if a == ranking[y]:
 			return str(y[1])
+
+#Muestra el ranking al final de la partida.
+def mostrarRanking():
+	global ranking
+	mensaje = ""
+	for x in ranking:
+		mensaje += str(x) + str(ranking[x]) + "\n"
+	return mensaje
+
+#Muestra el historial al final de la partida.
+def mostrarHistorial():
+	global historial
+	mensaje = ""
+	for x in historial:
+		mensaje += str(x) +"\n"+ str(historial[x]) + "\n"
+	return mensaje
 
 #Método main
 def main():
@@ -222,20 +240,18 @@ def main():
     	elif pregunta == "no":
     		print("\n***Partida terminada***")
     		print("***RANKING***\n")
-    		print(ranking)
-    		print("\n***HISTORIAL***")
-    		for h in historial:
-    			print(h , historial[h])
+    		print(mostrarRanking())
+    		print("\n***HISTORIAL***\n")
+    		print(mostrarHistorial())
     		g = ganador()
     		for x in lista_conexiones:
-    			msj = {"mensaje": "ganador", "valor": "RANKING\n"+str(ranking)}
+    			msj = {"mensaje": "ganador", "valor": "RANKING\n"+str(mostrarRanking()) + "\nHISTORIAL\n"+str(mostrarHistorial())}
     			msjJson = json.dumps(msj)
     			enviar(lista_conexiones[int(g)-1], msjJson)
     			if x != lista_conexiones[int(g)-1]:
-    				msj = {"mensaje": "perdedor", "valor": "RANKING\n"+ str(ranking)}
+    				msj = {"mensaje": "perdedor", "valor": "RANKING\n"+ str(mostrarRanking()) + "\nHISTORIAL\n"+str(mostrarHistorial())}
     				msjJson = json.dumps(msj)
-    				enviar(x, msjJson)
-    			
+    				enviar(x, msjJson)  			
     		break
     	else: 
     		print("La indicacion no es correcta.")
