@@ -251,7 +251,8 @@ def main():
     			if x != lista_conexiones[int(g)-1]:
     				msj = {"mensaje": "perdedor", "valor": "RANKING\n"+ str(mostrarRanking()) + "\nHISTORIAL\n"+str(mostrarHistorial())}
     				msjJson = json.dumps(msj)
-    				enviar(x, msjJson)  			
+    				enviar(x, msjJson)
+    			
     		break
     	else: 
     		print("La indicacion no es correcta.")
