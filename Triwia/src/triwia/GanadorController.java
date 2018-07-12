@@ -13,9 +13,8 @@ import javafx.util.Duration;
 import static triwia.FXMLDocumentController.ranking;
 
 /**
- * FXML Controller class
  *
- * @author Nicole
+ * @author Nicole Fonseca, Wilmer Mata
  */
 public class GanadorController implements Initializable {
 

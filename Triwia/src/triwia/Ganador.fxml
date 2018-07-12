@@ -3,12 +3,16 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="454.0" prefWidth="610.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="triwia.GanadorController">
+<AnchorPane id="AnchorPane" prefHeight="483.0" prefWidth="750.0" style="-fx-background-color: #99CCFF;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="triwia.GanadorController">
    <children>
       <ImageView fx:id="textoImageView" fitHeight="88.0" fitWidth="489.0" layoutX="61.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="gif1ImageView" fitHeight="193.0" fitWidth="154.0" layoutX="14.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="gif2ImageView" fitHeight="152.0" fitWidth="154.0" layoutX="456.0" layoutY="301.0" pickOnBounds="true" preserveRatio="true" />
-      <Label fx:id="rankingLabel" layoutX="186.0" layoutY="133.0" prefHeight="289.0" prefWidth="260.0" />
+      <ImageView fx:id="gif1ImageView" fitHeight="193.0" fitWidth="154.0" layoutX="36.0" layoutY="272.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="gif2ImageView" fitHeight="152.0" fitWidth="154.0" layoutX="596.0" layoutY="324.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="rankingLabel" layoutX="29.0" layoutY="133.0" prefHeight="139.0" prefWidth="713.0">
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font></Label>
    </children>
 </AnchorPane>

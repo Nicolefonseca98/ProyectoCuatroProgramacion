@@ -98,19 +98,16 @@ public class FXMLDocumentController implements Initializable {
                                         } catch (NullPointerException | IOException npe) {
                                         }
                                     } catch (ParseException ex) {
-                                        Logger.getLogger(FXMLDocumentController.class.getName()).log(Level.SEVERE, null, ex);
                                     }
                                 }
                             });
 
                         } catch (IOException ex) {
-                            labelBienvenida.setText("No se puede conectar.");
                         }
                     }
                 }
             }).start();
         } catch (Exception exception) {
-            labelBienvenida.setText("No se puede conectar.");
         }
     }
 

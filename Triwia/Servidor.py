@@ -92,7 +92,7 @@ def verificaRespuesta(pregunta):
 			for i in lista_respuestas:
 				respuesta = i[1:len(i)]
 				for y in diccionario[x]:
-					if respuesta == y:
+					if respuesta.lower() == y.lower():
 						existeJugador, count= revisaRanking(i[0])
 						if existeJugador:
 							ranking['Respuestas correctas jugador ',i[0]] = count
@@ -154,7 +154,7 @@ def main():
     host,port = ini()
     s = crearSocket()
     ligarSocket(s, host,port)
-    s.listen(10)  
+    s.listen(9)  
     counter = 0
 
     print("\nFase de conexiones.","\nEsperando por los jugadores.")
@@ -185,8 +185,6 @@ def main():
     		elif pregunta == "si":
     			print("\n**Bienvenido a la fase de preguntas**")
     			break
-    if aceptaConexiones == False:
-    	print("*Ya no se aceptan conexiones*")
 
     for i in lista_hilos_cliente:
     	i.start()
@@ -202,7 +200,15 @@ def main():
     			pregJson = json.dumps(preg)
     			start_new_thread(enviar,(x, pregJson))
     		print("*Enviando pregunta*\n")
+    		cancelarPregunta = input("Si desea cancelar la pregunta ingrese una 'c, de lo contrario cualquier otra letra': ")
     		while aceptaRespuestas == True:
+    			if cancelarPregunta == "c":
+    				for con in lista_conexiones:
+    					msj = {"mensaje": "error", "valor": "Se ha cancelado la pregunta"}
+    					msjJson = json.dumps(msj)
+    					enviar(con, msjJson)
+    					counter = counter + 1
+    					aceptaRespuestas = False
     			pregunta = enviarPregunta(counter)
     			respuestaCorrecta, jugador = verificaRespuesta(pregunta)
     			if(respuestaCorrecta == True):
@@ -212,6 +218,7 @@ def main():
     				aceptaRespuestas = False
     			else:
     				pass
+
     	elif pregunta == "no":
     		print("\n***Partida terminada***")
     		print("***RANKING***\n")
@@ -221,11 +228,11 @@ def main():
     			print(h , historial[h])
     		g = ganador()
     		for x in lista_conexiones:
-    			msj = {"mensaje": "ganador", "valor": str(ranking)}
+    			msj = {"mensaje": "ganador", "valor": "RANKING\n"+str(ranking)}
     			msjJson = json.dumps(msj)
     			enviar(lista_conexiones[int(g)-1], msjJson)
     			if x != lista_conexiones[int(g)-1]:
-    				msj = {"mensaje": "perdedor", "valor": str(ranking)}
+    				msj = {"mensaje": "perdedor", "valor": "RANKING\n"+ str(ranking)}
     				msjJson = json.dumps(msj)
     				enviar(x, msjJson)
     			
